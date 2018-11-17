@@ -30,6 +30,9 @@ public class ShepardFairey
     {
         int width = this.image.getWidth();
         int height = this.image.getHeight();
+        
+        int smallest = 255;
+        int largest = 0;
 
         for( int y = 0; y < height; y++ )
         {
@@ -37,84 +40,59 @@ public class ShepardFairey
             {
                 Pixel pixel = this.image.getPixel( x, y );
                 Color color = pixel.getColor();
-                int smallest = 255;
-                int largest = 0;
-                int a = color.getBlue();
-                if ( a < smallest)
+                
+                int average = (color.getBlue() + color.getGreen() + color.getRed()) / 3;
+                Color grayAverage = new Color( average, average, average );
+                pixel.setColor( grayAverage );
+                
+                if ( average < smallest)
                 {
-                    a = smallest;
+                    smallest = average;
                 }
                 
-                if ( a > largest)
+                if ( average > largest)
                 {
-                    a = largest;
-                }
-                
-                int difference = (largest - smallest) / 4;
-                
-                // if ( color.getBlue() < 64 )
-                // {
-                    // pixel.setColor( OFF_WHITE );
-                // }
-                // else if ( color.getBlue() > 63 && color.getBlue() < 126 )
-                // {
-                    // pixel.setColor( LIGHT_BLUE );
-                // }
-                // else if ( color.getBlue() > 125 && color.getBlue() < 189 )
-                // {
-                    // pixel.setColor( RED );
-                // }
-                // else if ( color.getBlue() > 188 && color.getBlue() <= 255 )
-                // {
-                    // pixel.setColor( DARK_BLUE );
-                // }
-                
-                if ( color.getBlue() >= smallest && color.getBlue() <= (smallest += difference) )
-                {
-                    pixel.setColor( OFF_WHITE );
-                }
-                else if ( color.getBlue() >= (smallest += difference) && color.getBlue() <= (smallest += ( 2 * difference )))
-                {
-                    pixel.setColor( LIGHT_BLUE );
-                }
-                else if ( color.getBlue() >= (smallest += ( 2 * difference )) && color.getBlue() <= (smallest += ( 3 * difference )))
-                {
-                    pixel.setColor( RED );
-                }
-                else if ( color.getBlue() >= (smallest += ( 3 * difference )) && color.getBlue() <= largest)
-                {
-                    pixel.setColor( DARK_BLUE );
-                }
-                
+                    largest = average;
+                }      
             }
         }
         
-        // for( int y = 0; y < height; y++ )
-        // {
-            // for( int x = 0; x < width; x++ )
-            // {
+        int difference = ((largest - smallest) / 4);
+        
+        System.out.println(smallest);
+        System.out.println(largest);
+        System.out.println(difference);
+        
+        for( int y = 0; y < height; y++ )
+        {
+            for( int x = 0; x < width; x++ )
+            {
                 
-               // Pixel pixel = this.image.getPixel( x, y );
-               // Color color = pixel.getColor();
+               Pixel pixel = this.image.getPixel( x, y );
+               Color color = pixel.getColor();
+               
+               int average = (color.getBlue() + color.getGreen() + color.getRed()) / 3;
+               Color grayAverage = new Color( average, average, average );
+               pixel.setColor( grayAverage );
 
-               // if ( color.getBlue() >= smallest && color.getBlue() <= (smallest += difference) )
-                // {
-                    // pixel.setColor( OFF_WHITE );
-                // }
-                // else if ( color.getBlue() >= smallest += difference && color.getBlue() <= smallest += ( 2 * difference ))
-                // {
-                    // pixel.setColor( LIGHT_BLUE );
-                // }
-                // else if ( color.getBlue() >= smallest += ( 2 * difference ) && color.getBlue() <= smallest += ( 3 * difference ))
-                // {
-                    // pixel.setColor( RED );
-                // }
-                // else if ( color.getBlue() >= smallest += ( 3 * difference ) && color.getBlue() <= largest)
-                // {
-                    // pixel.setColor( DARK_BLUE );
-                // }
-            // }
-    // }
+               if ( average >= smallest && (average <= (smallest += difference) ))
+                {
+                    pixel.setColor( OFF_WHITE );
+                }
+                else if ( average >= (smallest += difference) && (average <= (smallest += ( 2 * difference ))))
+                {
+                    pixel.setColor( LIGHT_BLUE );
+                }
+                else if ( average >= (smallest += ( 2 * difference )) && average <= (smallest += ( 3 * difference )))
+                {
+                    pixel.setColor( RED );
+                }
+                else
+                {
+                    pixel.setColor( DARK_BLUE );
+                }
+            }
+    }
 }
     public static void main(String args[])
     {

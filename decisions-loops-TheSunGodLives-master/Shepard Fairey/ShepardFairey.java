@@ -28,72 +28,12 @@ public class ShepardFairey
      */
     public void transform()
     {
-        int width = this.image.getWidth();
-        int height = this.image.getHeight();
+        manipulator.grayscale();
         
-        int smallest = 255;
-        int largest = 0;
-
-        for( int y = 0; y < height; y++ )
-        {
-            for( int x = 0; x < width; x++ )
-            {
-                Pixel pixel = this.image.getPixel( x, y );
-                Color color = pixel.getColor();
-                
-                int average = (color.getBlue() + color.getGreen() + color.getRed()) / 3;
-                Color grayAverage = new Color( average, average, average );
-                pixel.setColor( grayAverage );
-                
-                if ( average < smallest)
-                {
-                    smallest = average;
-                }
-                
-                if ( average > largest)
-                {
-                    largest = average;
-                }      
-            }
-        }
-        
-        int difference = ((largest - smallest) / 4);
-        
-        System.out.println(smallest);
-        System.out.println(largest);
-        System.out.println(difference);
-        
-        for( int y = 0; y < height; y++ )
-        {
-            for( int x = 0; x < width; x++ )
-            {
-                
-               Pixel pixel = this.image.getPixel( x, y );
-               Color color = pixel.getColor();
-               
-               int average = (color.getBlue() + color.getGreen() + color.getRed()) / 3;
-               Color grayAverage = new Color( average, average, average );
-               pixel.setColor( grayAverage );
-
-               if ( average >= smallest && (average <= (smallest += difference) ))
-                {
-                    pixel.setColor( OFF_WHITE );
-                }
-                else if ( average >= (smallest += difference) && (average <= (smallest += ( 2 * difference ))))
-                {
-                    pixel.setColor( LIGHT_BLUE );
-                }
-                else if ( average >= (smallest += ( 2 * difference )) && average <= (smallest += ( 3 * difference )))
-                {
-                    pixel.setColor( RED );
-                }
-                else
-                {
-                    pixel.setColor( DARK_BLUE );
-                }
-            }
-    }
+        manipulator.posterize();
 }
+
+
     public static void main(String args[])
     {
         // create a new picture object based on the original selfie
@@ -115,7 +55,7 @@ public class ShepardFairey
          * You may need to specify an absolute path. For example:
          *  finalPic.write("C:\\Users\\gschmit\\GitHub\\decisions-loops-gcschmit\\Shepard Fairey\\MrSchmitPortrait.jpg");
          */
-        selfie.write( "WillKunaPortrait.jpg" );
+        selfie.write( "C:\\Users\\Will\\Documents\\GitHub\\decisions-loops-TheSunGodLives-master\\decisions-loops-TheSunGodLives-master\\Shepard Fairey\\WillKunaPortrait.jpg" );
         
         selfie.explore();
         
@@ -124,7 +64,7 @@ public class ShepardFairey
         fairey = new ShepardFairey( selfie );
         selfie.explore();
         fairey.transform();
-        selfie.write( "WillKunaLandscape.jpg" );
+        selfie.write( "C:\\Users\\Will\\Documents\\GitHub\\decisions-loops-TheSunGodLives-master\\decisions-loops-TheSunGodLives-master\\Shepard Fairey\\WillKunaLandscape.jpg" );
 
         // display the transformed selfie picture
         selfie.explore();

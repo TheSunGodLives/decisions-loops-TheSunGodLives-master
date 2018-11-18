@@ -91,10 +91,14 @@ public class ColorManipulator
         }
     }
     
-    public void mosaic()
+    public void posterize()
     {
+        
         int width = this.picture.getWidth();
         int height = this.picture.getHeight();
+        
+        int smallest = 255;
+        int largest = 0;
 
         for( int y = 0; y < height; y++ )
         {
@@ -103,26 +107,53 @@ public class ColorManipulator
                 Pixel pixel = this.picture.getPixel( x, y );
                 Color color = pixel.getColor();
                 
-                if ( color.getBlue() < 64 )
+                int average = (color.getBlue() + color.getGreen() + color.getRed()) / 3;
+
+                
+                if ( average < smallest)
+                {
+                    smallest = average;
+                }
+                
+                if ( average > largest)
+                {
+                    largest = average;
+                }      
+            }
+        }
+        
+        int difference = ((largest - smallest) / 4);
+                for( int y = 0; y < height; y++ )
+        {
+            for( int x = 0; x < width; x++ )
+            {
+                
+               Pixel pixel = this.picture.getPixel( x, y );
+               Color color = pixel.getColor();
+               
+               int average = (color.getBlue() + color.getGreen() + color.getRed()) / 3;
+
+
+               if ( average < difference)
                 {
                     pixel.setColor( OFF_WHITE );
                 }
-                else if ( color.getBlue() > 63 && color.getBlue() < 126 )
+                else if ( average < (2 * difference))
                 {
                     pixel.setColor( LIGHT_BLUE );
                 }
-                else if ( color.getBlue() > 125 && color.getBlue() < 189 )
+                else if ( average < (3 * difference))
                 {
                     pixel.setColor( RED );
                 }
-                else if ( color.getBlue() > 188 && color.getBlue() <= 255 )
+                else
                 {
                     pixel.setColor( DARK_BLUE );
                 }
             }
-        }
     }
-
+    }
+    
     public static void main(String args[])
     {
         // the selfie image must be in the Shepard Fairey folder
